@@ -1,11 +1,18 @@
 import { useState, useEffect } from 'react'
 import { motion, scale } from "motion/react"
 const Cards = ({ reference }) => {
-
+    // const [tempId, setTempId] = useState(0);
     const [notes, setNotes] = useState(() => {
         const saved = localStorage.getItem("notes")
         return saved ? JSON.parse(saved) : []
     })
+
+    const now = new Date();
+    const currentTime = now.toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    });
 
     const [input, setInput] = useState("")
 
@@ -29,7 +36,9 @@ const Cards = ({ reference }) => {
 
         const newNote = {
             id: Date.now(),
+            displayId: notes.length + 1,
             text: input,
+            time: currentTime,
             color: highlightColors[Math.floor(Math.random() * highlightColors.length)]
         }
 
@@ -80,7 +89,7 @@ const Cards = ({ reference }) => {
                         {/* Random Color Bottom Bar */}
                         <div className={`absolute bottom-0 left-0 w-full h-14 ${note.color} flex items-center justify-between px-5`}>
                             <span className='text-zinc-900 text-xs font-bold uppercase tracking-wider'>
-                                Note
+                                Note at {note.time}
                             </span>
 
                             <button
